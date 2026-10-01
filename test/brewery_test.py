@@ -1,27 +1,26 @@
 import pytest
 import requests
 
-TIMEOUT=3
 
-def test_single():
+def test_single(timeout):
     obdb_id = "b54b16e1-ac3b-4bff-a11f-f7ae9ddc27e0"
-    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries/{obdb_id}', timeout=TIMEOUT)
+    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries/{obdb_id}', timeout=timeout)
     resp = response.json()
     assert response.status_code == 200
     assert resp["id"] == obdb_id
 
 
-def test_list():
+def test_list(timeout):
     pages = 10
-    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries?per_page={pages}', timeout=TIMEOUT)
+    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries?per_page={pages}', timeout=timeout)
     resp = response.json()
     assert response.status_code == 200
     assert len(resp) == pages
 
 
-def test_random():
+def test_random(timeout):
     size = {'size': 3}
-    response = requests.get('https://api.openbrewerydb.org/v1/breweries/random', params=size, timeout=TIMEOUT)
+    response = requests.get('https://api.openbrewerydb.org/v1/breweries/random', params=size, timeout=timeout)
     resp = response.json()
     assert response.status_code == 200
     assert len(resp) == size['size']
@@ -33,8 +32,8 @@ search_data = [
     {"query":"6198233402", "per_page":5, "search_in_resp": {"phone":"6198233402"}}
 ]
 @pytest.mark.parametrize("data", search_data)
-def test_search(data):
-    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries/search?query={data["query"]}&per_page={data["per_page"]}', timeout=TIMEOUT)
+def test_search(data, timeout):
+    response = requests.get(f'https://api.openbrewerydb.org/v1/breweries/search?query={data["query"]}&per_page={data["per_page"]}', timeout=timeout)
     # print(response.url)
     resp = response.json()
     key, value = list(data["search_in_resp"].items())[0] # ключ и занчение из search_in_resp из data
@@ -49,8 +48,8 @@ meta_data = [
     {"by_type":"micro"}
 ]
 @pytest.mark.parametrize("data", meta_data)
-def test_metadata(data):
-    response = requests.get('https://api.openbrewerydb.org/v1/breweries/meta', params=data, timeout=TIMEOUT)
+def test_metadata(data, timeout):
+    response = requests.get('https://api.openbrewerydb.org/v1/breweries/meta', params=data, timeout=timeout)
     resp = response.json()
     assert response.status_code == 200
     assert resp["total"] != 0

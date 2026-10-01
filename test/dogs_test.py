@@ -1,7 +1,6 @@
 import pytest
 import requests
 
-# TIMEOUT=3
 
 def test_get_all(timeout):
     response = requests.get('https://dog.ceo/api/breeds/list/all', timeout=timeout)

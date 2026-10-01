@@ -1,10 +1,8 @@
 import pytest
 import requests
 
-TIMEOUT=3
 
-
-def test_get_public_users(base_url, status_code):
+def test_get_public_users(base_url, status_code, timeout):
     # print(base_url)
-    response = requests.get(base_url, timeout=TIMEOUT)
+    response = requests.get(base_url, timeout=timeout)
     assert response.status_code == int(status_code)

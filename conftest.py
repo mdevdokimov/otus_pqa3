@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def status_code(request):
+def timeout(request):
     return request.config.getoption("--timeout")
 
 @pytest.fixture
